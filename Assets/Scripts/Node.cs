@@ -11,8 +11,8 @@ public class Node : MonoBehaviour
     void Awake()
     {
         _lineNode = new LineNode(transform.position);
-        LineController.GetNodes().Add(_lineNode);
-        
+        LineController.GetLineNodes().Add(_lineNode);
+        LineController.GetNodes().Add(this);
     }
 
     // Update is called once per frame

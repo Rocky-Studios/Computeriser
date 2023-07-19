@@ -5,10 +5,13 @@ using UnityEngine;
 public static class LineController
 {
     private static List<Line> _lines = new();
-    private static List<LineNode> _nodes = new();
+    private static List<LineNode> _lineNodes = new();
+    private static List<Node> _nodes = new();
     private static GameObject _linePrefab;
     private static float lineWidth = 0.1f;
-    
+    private static List<LineNode> _nodesInNewLine = new List<LineNode>();
+    private static bool _lineStarted = false;
+    private static bool _lineFinished = false;
     public static void Init()
     {
         
@@ -33,10 +36,58 @@ public static class LineController
 
     public static void Loop()
     {
-        Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+
+
+        
+        
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Click at " + position);
+            Vector2 click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            Node closest = GetNearestNode(click);
+
+            if(closest == null)
+            {
+                if(_lineStarted)
+                {
+                    //Add intermediate node
+                    _nodesInNewLine.Add(new LineNode(click));
+                    Debug.Log("added intermediate");
+                }
+                
+
+
+            }
+            else
+            {
+                
+                //Add start/end
+                if ( _lineStarted)
+                {
+                    _lineFinished = true;
+                }
+                if (_nodesInNewLine.Count == 0) _lineStarted = true;
+                _nodesInNewLine.Add(closest._lineNode);
+            }
+            
+
+            if(_nodesInNewLine.Count >= 2 && _lineFinished)
+            {
+                //Finish new line
+                GenerateLine(_nodesInNewLine, Color.cyan);
+                _nodesInNewLine = new();
+                _lineStarted = false;
+                _lineFinished = false;
+            }
+            Debug.Log(_lineStarted);
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            //Cancel line
+            _nodesInNewLine = new();
+            _lineStarted = false;
+            _lineFinished = false;
         }
     }
 
@@ -54,8 +105,34 @@ public static class LineController
         Update(l);
     }
 
-    public static List<LineNode> GetNodes()
+    public static List<LineNode> GetLineNodes()
+    {
+        return _lineNodes;
+    }
+
+    public static List<Node> GetNodes()
     {
         return _nodes;
+    }
+
+    public static Node GetNearestNode(Vector2 click)
+    {
+        float closest = Mathf.Infinity;
+
+        foreach(Node n in _nodes)
+        {
+            float distance = Vector2.Distance(click, n.gameObject.transform.position);
+
+            if(distance < closest) closest = distance;
+        }
+
+        foreach(Node n in _nodes)
+        {
+            float distance = Vector2.Distance(click, n.gameObject.transform.position);
+            if (distance == closest && distance < 0.1f) return n;
+        }
+
+        return null;
+
     }
 }
