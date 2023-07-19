@@ -29,7 +29,15 @@ public static class LineController
         AnimationCurve widthCurve = new();
         widthCurve.AddKey(0, lineWidth);
         l.GetRenderer().widthCurve = widthCurve;
-        
+    }
+
+    public static void Loop()
+    {
+        Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Click at " + position);
+        }
     }
 
     public static void GenerateLine(List<LineNode> nodes, Color color)
