@@ -54,10 +54,10 @@ public class Line : MonoBehaviour
     }
 
     public void SetColor(Color color)
-    {/*
+    {
         _color = color;
         GetRenderer().startColor = _color;
-        GetRenderer().endColor = _color;*/
+        GetRenderer().endColor = _color;
     }
 
 }

@@ -12,6 +12,7 @@ public class Node : MonoBehaviour
     {
         _lineNode = new LineNode(transform.position);
         LineController.GetNodes().Add(_lineNode);
+        
     }
 
     // Update is called once per frame
@@ -20,7 +21,7 @@ public class Node : MonoBehaviour
         if(transform.hasChanged)
         {
             
-            _lineNode.Update();
+            _lineNode.Update(transform.position);
             
         }
     }
@@ -29,7 +30,7 @@ public class Node : MonoBehaviour
 public class LineNode
 {
     private Vector2 _position;
-    public List<Line> _lines;
+    public List<Line> _lines = new List<Line>();
 
     public Vector2 GetPosition()
     {
@@ -46,8 +47,9 @@ public class LineNode
        
     }
 
-    public void Update()
+    public void Update(Vector2 position)
     {
+        _position = position;   
         foreach (Line line in _lines)
         {
             LineController.Update(line);

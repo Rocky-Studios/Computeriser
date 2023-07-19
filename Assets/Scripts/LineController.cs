@@ -11,12 +11,7 @@ public static class LineController
     
     public static void Init()
     {
-        AnimationCurve widthCurve = new();
-        widthCurve.AddKey(0, lineWidth);
-        foreach (Line l in _lines)
-        {
-            l.GetRenderer().widthCurve = widthCurve;
-        }
+        
 
         foreach(Line l in _lines)
         {
@@ -31,8 +26,11 @@ public static class LineController
 
     public static void Update(Line l)
     {
-        Debug.Log(l.GetRenderer());
         l.GetRenderer().SetPositions(l.GetPoints().ToArray());
+        AnimationCurve widthCurve = new();
+        widthCurve.AddKey(0, lineWidth);
+        l.GetRenderer().widthCurve = widthCurve;
+        
     }
 
     public static void GenerateLine(List<LineNode> nodes, Color color)
