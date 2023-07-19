@@ -13,6 +13,6 @@ public class DebugNodeCounter : MonoBehaviour
 
     void Update()
     {
-        text.text = "Nodes: " + LineController.GetNodes().Count;
+        text.text = "Nodes: " + LineController.GetLineNodes().Count;
     }
 }
