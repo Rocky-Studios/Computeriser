@@ -8,4 +8,9 @@ public class InitLineController : MonoBehaviour
     {
         LineController.Init();
     }
+
+    private void Update()
+    {
+        LineController.Loop();
+    }
 }
