@@ -21,7 +21,6 @@ public static class LineController
         
         if (_linePrefab == null)
             _linePrefab = Resources.Load<GameObject>("Prefab/Line");
-        GenerateLine(_nodes, Color.cyan);
     }
 
     public static void Update(Line l)
@@ -38,7 +37,6 @@ public static class LineController
         GameObject line = GameObject.Instantiate(_linePrefab);
         Line l = line.GetComponent<Line>();
         l.Init(nodes, color);
-
         foreach(LineNode n in nodes)
         {
             n._lines.Add(l);
