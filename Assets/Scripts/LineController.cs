@@ -8,7 +8,8 @@ public static class LineController
     private static List<LineNode> _lineNodes = new();
     private static List<Node> _nodes = new();
     private static GameObject _linePrefab;
-    private static float lineWidth = 0.05f;
+    private static float _lineWidth = 0.05f;
+    private static float _voltageLineWidth = 0.02f;
     private static List<LineNode> _nodesInNewLine = new List<LineNode>();
     private static bool _lineStarted = false;
     private static bool _lineFinished = false;
@@ -30,9 +31,15 @@ public static class LineController
     public static void Update(Line l)
     {
         l.GetRenderer().SetPositions(l.GetPoints().ToArray());
+        l.GetVoltageRenderer().SetPositions(l.GetPoints().ToArray());
+
         AnimationCurve widthCurve = new();
-        widthCurve.AddKey(0, lineWidth);
+        widthCurve.AddKey(0, _lineWidth);
         l.GetRenderer().widthCurve = widthCurve;
+
+        widthCurve = new();
+        widthCurve.AddKey(0, _voltageLineWidth);
+        l.GetVoltageRenderer().widthCurve = widthCurve;
     }
 
     public static void Loop()
@@ -111,6 +118,9 @@ public static class LineController
         }
         l.GetRenderer().numCornerVertices = 8;
         l.GetRenderer().positionCount = nodes.Count;
+        l.GetVoltageRenderer().numCornerVertices = 8;
+        l.GetVoltageRenderer().positionCount = nodes.Count;
+        _lines.Add(l);
         Update(l);
     }
 
@@ -148,6 +158,11 @@ public static class LineController
     public static bool GetDrawingLine()
     {
         return _isDrawingLine;
+    }
+
+    public static List<Line> GetLines()
+    {
+        return _lines;
     }
     #endregion
 }

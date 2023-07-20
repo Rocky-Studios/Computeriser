@@ -14,8 +14,8 @@ public class Line : MonoBehaviour
 
     private static Color _offColor = Color.gray;
 
-    private LineRenderer _lineRenderer;
-    private LineRenderer _voltageRenderer;
+    [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private LineRenderer _voltageRenderer;
 
     void Start()
     {
@@ -31,11 +31,13 @@ public class Line : MonoBehaviour
 
     public LineRenderer GetRenderer()
     {
+        _lineRenderer = GetComponent<LineRenderer>();
         return _lineRenderer;
     }
 
     public LineRenderer GetVoltageRenderer()
     {
+        _voltageRenderer = transform.GetChild(0).GetComponent<LineRenderer>();
         return _voltageRenderer;
     }
 

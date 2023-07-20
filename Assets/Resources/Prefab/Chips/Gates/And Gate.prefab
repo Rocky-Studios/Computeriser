@@ -44,6 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3931788403024298169}
   - component: {fileID: 8562319909011668820}
+  - component: {fileID: 4323515577826393677}
   m_Layer: 0
   m_Name: And Gate
   m_TagString: Untagged
@@ -88,6 +89,18 @@ MonoBehaviour:
   - {fileID: 5767180196928267282}
   _color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _chipType: 0
+--- !u!114 &4323515577826393677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037377865881839732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24de02f373a8924449a79dbe320a989c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4927329660031094739
 GameObject:
   m_ObjectHideFlags: 0
