@@ -9,9 +9,17 @@ public class Line : MonoBehaviour
     private LineNode _endNode = new();
     
     private Color _color;
+    private Color _voltageColor;
+    private float _voltage;
+
+    private static Color _offColor = Color.gray;
+
+    private LineRenderer _lineRenderer;
+    private LineRenderer _voltageRenderer;
     void Start()
     {
-        
+        _lineRenderer = GetComponent<LineRenderer>();
+        _voltageRenderer = transform.GetChild(0).GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -22,7 +30,12 @@ public class Line : MonoBehaviour
 
     public LineRenderer GetRenderer()
     {
-        return GetComponent<LineRenderer>();
+        return _lineRenderer;
+    }
+
+    public LineRenderer GetVoltageRenderer()
+    {
+        return _voltageRenderer;
     }
 
     public List<Vector3> GetPoints()
@@ -51,6 +64,7 @@ public class Line : MonoBehaviour
         _nodes = interNodes;
         _endNode = nodes[nodes.Count-1];
         SetColor(c);
+        SetVoltageColor(_offColor);
     }
 
     public void SetColor(Color color)
@@ -58,6 +72,13 @@ public class Line : MonoBehaviour
         _color = color;
         GetRenderer().startColor = _color;
         GetRenderer().endColor = _color;
+    }
+
+    public void SetVoltageColor(Color color)
+    {
+        _voltageColor = color;
+        GetVoltageRenderer().startColor = _color;
+        GetVoltageRenderer().endColor = _color;
     }
 
 }

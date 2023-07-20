@@ -8,20 +8,21 @@ public static class LineController
     private static List<LineNode> _lineNodes = new();
     private static List<Node> _nodes = new();
     private static GameObject _linePrefab;
-    private static float lineWidth = 0.1f;
+    private static float lineWidth = 0.05f;
     private static List<LineNode> _nodesInNewLine = new List<LineNode>();
     private static bool _lineStarted = false;
     private static bool _lineFinished = false;
+    private static bool _isDrawingLine = false;
     public static void Init()
     {
-        
 
-        foreach(Line l in _lines)
+
+        foreach (Line l in _lines)
         {
             Update(l);
         }
 
-        
+
         if (_linePrefab == null)
             _linePrefab = Resources.Load<GameObject>("Prefab/Line");
     }
@@ -36,43 +37,53 @@ public static class LineController
 
     public static void Loop()
     {
-        
+        if (_nodesInNewLine.Count > 0)
+        {
+            _isDrawingLine = true;
+        }
+        else
+        {
+            _isDrawingLine = false;
+        }
 
 
-        
-        
-        if(Input.GetMouseButtonDown(0))
+
+
+        if (Input.GetMouseButtonDown(0))
         {
             Vector2 click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            
+
             Node closest = GetNearestNode(click);
 
-            if(closest == null)
+            if (closest == null)
             {
-                if(_lineStarted)
+                if (_lineStarted)
                 {
                     //Add intermediate node
                     _nodesInNewLine.Add(new LineNode(click));
                     Debug.Log("added intermediate");
                 }
-                
+
 
 
             }
             else
             {
-                
-                //Add start/end
-                if ( _lineStarted)
+                if (_nodesInNewLine.IndexOf(closest._lineNode) != null)
                 {
-                    _lineFinished = true;
+                    //Add start/end
+                    if (_lineStarted)
+                    {
+                        _lineFinished = true;
+                    }
+                    if (_nodesInNewLine.Count == 0) _lineStarted = true;
+                    _nodesInNewLine.Add(closest._lineNode);
                 }
-                if (_nodesInNewLine.Count == 0) _lineStarted = true;
-                _nodesInNewLine.Add(closest._lineNode);
-            }
-            
 
-            if(_nodesInNewLine.Count >= 2 && _lineFinished)
+            }
+
+
+            if (_nodesInNewLine.Count >= 2 && _lineFinished)
             {
                 //Finish new line
                 GenerateLine(_nodesInNewLine, Color.cyan);
@@ -82,7 +93,7 @@ public static class LineController
             }
             Debug.Log(_lineStarted);
         }
-        else if(Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonDown(1))
         {
             //Cancel line
             _nodesInNewLine = new();
@@ -96,15 +107,16 @@ public static class LineController
         GameObject line = GameObject.Instantiate(_linePrefab);
         Line l = line.GetComponent<Line>();
         l.Init(nodes, color);
-        foreach(LineNode n in nodes)
+        foreach (LineNode n in nodes)
         {
             n._lines.Add(l);
         }
-
-
+        l.GetRenderer().numCornerVertices = 8;
+        l.GetRenderer().positionCount = nodes.Count;
         Update(l);
     }
 
+    #region OOP Stuff
     public static List<LineNode> GetLineNodes()
     {
         return _lineNodes;
@@ -114,19 +126,18 @@ public static class LineController
     {
         return _nodes;
     }
-
     public static Node GetNearestNode(Vector2 click)
     {
         float closest = Mathf.Infinity;
 
-        foreach(Node n in _nodes)
+        foreach (Node n in _nodes)
         {
             float distance = Vector2.Distance(click, n.gameObject.transform.position);
 
-            if(distance < closest) closest = distance;
+            if (distance < closest) closest = distance;
         }
 
-        foreach(Node n in _nodes)
+        foreach (Node n in _nodes)
         {
             float distance = Vector2.Distance(click, n.gameObject.transform.position);
             if (distance == closest && distance < 0.1f) return n;
@@ -135,4 +146,10 @@ public static class LineController
         return null;
 
     }
+
+    public static bool GetDrawingLine()
+    {
+        return _isDrawingLine;
+    }
+    #endregion
 }
