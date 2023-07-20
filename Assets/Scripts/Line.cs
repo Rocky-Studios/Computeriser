@@ -16,6 +16,7 @@ public class Line : MonoBehaviour
 
     private LineRenderer _lineRenderer;
     private LineRenderer _voltageRenderer;
+
     void Start()
     {
         _lineRenderer = GetComponent<LineRenderer>();
@@ -25,7 +26,7 @@ public class Line : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public LineRenderer GetRenderer()

@@ -61,7 +61,6 @@ public static class LineController
                 {
                     //Add intermediate node
                     _nodesInNewLine.Add(new LineNode(click));
-                    Debug.Log("added intermediate");
                 }
 
 
@@ -91,7 +90,6 @@ public static class LineController
                 _lineStarted = false;
                 _lineFinished = false;
             }
-            Debug.Log(_lineStarted);
         }
         else if (Input.GetMouseButtonDown(1))
         {
